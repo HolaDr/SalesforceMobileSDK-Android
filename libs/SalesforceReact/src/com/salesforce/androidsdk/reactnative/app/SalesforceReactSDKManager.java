@@ -68,7 +68,7 @@ public class SalesforceReactSDKManager extends MobileSyncSDKManager {
 
 	private static void init(Context context, Class<? extends Activity> mainActivity,
 							 Class<? extends Activity> loginActivity) {
-		if (INSTANCE == null) {
+		if (INSTANCE == null  ) {
     		INSTANCE = new SalesforceReactSDKManager(context, mainActivity, loginActivity);
     	}
 
@@ -110,7 +110,7 @@ public class SalesforceReactSDKManager extends MobileSyncSDKManager {
      * @return Singleton instance of SalesforceReactSDKManager.
      */
     public static SalesforceReactSDKManager getInstance() {
-    	if (INSTANCE != null) {
+    	if (INSTANCE != null ) {
     		return (SalesforceReactSDKManager) INSTANCE;
     	} else {
             throw new RuntimeException("Applications need to call SalesforceReactSDKManager.init() first.");

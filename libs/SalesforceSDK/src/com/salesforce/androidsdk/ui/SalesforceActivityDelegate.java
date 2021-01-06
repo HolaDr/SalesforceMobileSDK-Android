@@ -82,22 +82,28 @@ public class SalesforceActivityDelegate {
                 final String accountType = SalesforceSDKManager.getInstance().getAccountType();
                 final ClientManager.LoginOptions loginOptions = SalesforceSDKManager.getInstance().getLoginOptions();
 
-                // Gets a rest client.
-                new ClientManager(activity, accountType, loginOptions,
-                        SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(activity, new ClientManager.RestClientCallback() {
+                try {
+                    new ClientManager(activity, accountType, loginOptions,
+                            SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(activity, new ClientManager.RestClientCallback() {
 
-                    @Override
-                    public void authenticatedRestClient(RestClient client) {
-                        if (client == null) {
-                            SalesforceSDKManager.getInstance().logout(activity);
-                            return;
+                        @Override
+                        public void authenticatedRestClient(RestClient client) {
+                            if (client == null) {
+                                SalesforceSDKManager.getInstance().logout(activity);
+                                return;
+                            }
+                            ((SalesforceActivityInterface) activity).onResume(client);
+
+                            // Lets observers know that rendition is complete.
+                            EventsObservable.get().notifyEvent(EventsObservable.EventType.RenditionComplete);
                         }
-                        ((SalesforceActivityInterface) activity).onResume(client);
+                    });
+                } catch (Exception e){
+                    e.printStackTrace();
+                    ((SalesforceActivityInterface) activity).onResume(null);
+                }
+                // Gets a rest client.
 
-                        // Lets observers know that rendition is complete.
-                        EventsObservable.get().notifyEvent(EventsObservable.EventType.RenditionComplete);
-                    }
-                });
             }
             else {
                 ((SalesforceActivityInterface) activity).onResume(null);

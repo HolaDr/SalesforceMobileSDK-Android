@@ -737,7 +737,7 @@ public class SalesforceSDKManager {
 
         // Finishes front activity if specified, if this is the last account.
         if (shouldDismissActivity && frontActivity != null && (users == null || users.size() <= 1)) {
-            frontActivity.finish();
+            //frontActivity.finish();
         }
 
         /*
